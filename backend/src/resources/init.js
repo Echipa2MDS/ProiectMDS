@@ -4,7 +4,7 @@ const fastify = require('fastify')({ logger: true }),
     env = require("./env/index"),
     { MongoClient } = require("mongodb");
 
-const uri = "mongodb+srv://paul:paul@cluster0.o2zyb.mongodb.net/"
+
 const client = new MongoClient(uri);
 
 function startServer() {
