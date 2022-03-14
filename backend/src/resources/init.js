@@ -3,9 +3,9 @@
 const fastify = require('fastify')({ logger: true }),
     env = require("./env/index"),
     { MongoClient } = require("mongodb");
+require('dotenv').config({ path: "./src/resources/.env" });
+const client = new MongoClient(process.env.MONGO_URI);
 
-
-const client = new MongoClient(uri);
 
 function startServer() {
     fastify.listen(3000, function (error, address) {
@@ -28,13 +28,7 @@ async function run() {
     try {
         startServer();
         env.mongo = await startDatabase();
-        // await env.mongo.collection("users").insertOne({ detalii: { nume: "paul" } })
-        const query = {
-            detalii: {
-                nume: "paul"
-            }
-        };
-        console.log(await env.mongo.collection("users").findOne(query))
+        console.log(await env.mongo.collection("users").findOne())
     } catch (error) {
         console.log(error);
     }
