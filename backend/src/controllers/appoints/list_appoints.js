@@ -1,4 +1,4 @@
-const { readUsers } = require("../../helpers/users"),
+const { readAppoints } = require("../../helpers/appoint"),
     {sanitizeQuery} = require("../../utils");
 
 async function handler(req, res) {
@@ -7,7 +7,7 @@ async function handler(req, res) {
             page,
             limit,
         } = req.query
-    return readUsers(query, page, limit);
+    return readAppoints(query, page, limit);
 }
 
 module.exports = handler;

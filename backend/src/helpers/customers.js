@@ -36,7 +36,7 @@ async function updateCustomer(customer_id, data) {
     try {
         op_result = await env.mongo.collection("customers").updateOne(filter, update);
     } catch (error) {
-        if (error.name === "MongoError" && error.code === 11000) {
+        if (error.name === "MongoServerError" && error.code === 11000) {
             throw new Error("Customer already exists");
         }
         throw new Error(error);
@@ -97,7 +97,7 @@ async function insertAppointToCustomer(customer_id, appoit_id) {
     try {
         op_result = await env.mongo.collection("customers").updateOne(query, update);
     } catch (error) {
-        if (error.name === "MongoError" && error.code === 11000) {
+        if (error.name === "MongoServerError" && error.code === 11000) {
             throw new Error("Customer already exists");
         }
         throw new Error(error);

@@ -1,6 +1,8 @@
 const env = require("../resources/env/index"),
     uuid = require("uuid"),
-    lodash = require("lodash");
+    lodash = require("lodash"),
+    bcrypt = require("bcrypt"),
+    {generateToken} = require("./login/auth");
 
 async function insertUser(user) {
     const user_id = uuid.v4(),
@@ -12,13 +14,12 @@ async function insertUser(user) {
     try {
         await env.mongo.collection("users").insertOne(to_insert);
     } catch (error) {
-        if (error.name === "MongoError" && error.code === 11000) {
+        if (error.name === "MongoServerError" && error.code === 11000) {
             throw new Error("User already exists");
         }
         throw new Error(error);
     }
-
-    return { user_id };
+    return user_id;
 }
 
 async function updateUser(user_id, data) {
@@ -33,7 +34,7 @@ async function updateUser(user_id, data) {
     try {
         op_result = await env.mongo.collection("users").updateOne(filter, update);
     } catch (error) {
-        if (error.name === "MongoError" && error.code === 11000) {
+        if (error.name === "MongoServerError" && error.code === 11000) {
             throw new Error("User already exists");
         }
         throw new Error(error);
@@ -57,8 +58,10 @@ async function readUsers(query, page, limit = 20) {
         cursor.limit(limit);
         cursor.project(project);
 
-        const users = cursor.toArray();
+        const users = await cursor.toArray();
 
+        console.log(count,
+            users)
         return {
             count,
             users
@@ -78,7 +81,8 @@ async function readUser(user_id) {
     } catch (error) {
         throw new Error(error);
     }
-
+    console.log(user)
+    console.log(query)
     if (!user) {
         throw new Error("User not found");
     }
@@ -101,7 +105,27 @@ async function deleteUser(user_id) {
     }
 }
 
+async function checkUserEmailDb(email) {
+    const query = {email},
+        user = await env.mongo.collection("users").findOne(query);
+    if (user) {
+        return { status: 0 }
+    } else {
+        throw new Error("The email is not associated to an account");
+    }
+}
 
+async function checkUserPasswordDb(fastify, email, password) {
+    const query = {email},
+        user = await env.mongo.collection("users").findOne(query),
+        match = await bcrypt.compare(password, user.password);
+    if (match) {
+        const token = await generateToken(fastify, user);
+        return token;
+    } else {
+        throw new Error("The password is inccorrect.");
+    }
+}
 
 module.exports = {
     insertUser,
@@ -109,4 +133,6 @@ module.exports = {
     readUsers,
     readUser,
     deleteUser,
+    checkUserEmailDb,
+    checkUserPasswordDb,
 }

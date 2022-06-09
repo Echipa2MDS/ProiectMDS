@@ -1,8 +1,8 @@
-const { insertuser } = require("../../helpers/users");
+const { insertUser } = require("../../helpers/users");
 
 async function handler(req, res) {
     const user = req.body;
-    return insertuser(user);
+    return insertUser(user);
 }
 
 module.exports = handler;

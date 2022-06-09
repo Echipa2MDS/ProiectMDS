@@ -2,19 +2,31 @@
 
 const fastify = require('fastify')({ logger: true }),
     env = require("./env/index"),
-    { MongoClient } = require("mongodb"),
-    { insertUser } = require("../helpers/users")
+    { MongoClient } = require("mongodb");
 require('dotenv').config({ path: "./src/resources/.env" });
 const client = new MongoClient(process.env.MONGO_URI);
 
-
 function startServer() {
-    fastify.listen(3000, function (error, address) {
-        if (error) {
-            fastify.log.error(error);
-            process.exit(1);
-        }
-    });
+    try {
+        const {routes} = require('../routes/index');
+        fastify.register(routes);
+        fastify.register(require("../middleware/auth"))
+        fastify.register(require('@fastify/jwt'), {
+            secret: env.auth
+        });
+        fastify.register(require('@fastify/cookie'), {
+            secret: env.auth
+        });
+
+        fastify.listen(3000, function (error, address) {
+            if (error) {
+                fastify.log.error(error);
+                process.exit(1);
+            }
+        });
+    } catch (error) {
+        fastify.log.error("Error while starting the service %s \n %s", error.message, error.stack);
+    }
 }
 
 async function startDatabase() {
@@ -27,6 +39,7 @@ async function startDatabase() {
 
 async function run() {
     try {
+        env.auth = process.env.JWT_SECRET;
         startServer();
         env.mongo = await startDatabase();
     } catch (error) {

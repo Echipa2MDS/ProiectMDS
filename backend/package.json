@@ -10,8 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cookie": "^7.0.0",
+    "@fastify/jwt": "^6.1.0",
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.0",
-    "fastify": "^3.27.2",
+    "fastify": "^4.0.0",
+    "fastify-cookie": "^5.7.0",
+    "fastify-jwt": "^4.2.0",
+    "fastify-plugin": "^3.0.1",
     "lodash": "^4.17.21",
     "mongodb": "^4.4.0",
     "nodemon": "^2.0.15"
