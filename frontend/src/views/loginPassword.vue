@@ -106,7 +106,6 @@ export default {
           });
         }
 
-        console.log(Cookies.get("token"))
         await this.$router.push(`/dashboard?email=${email}`);
       } catch (err) {
         this.error = err.response.data.message;

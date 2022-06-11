@@ -1,8 +1,6 @@
 <template>
-    <div>
-        <NavigationBar></NavigationBar>
-
-    <!-- <div class="container">
+    <NavigationBar></NavigationBar>
+    <div class="container">
         <h1>
             VET App
         </h1>
@@ -68,10 +66,9 @@
                     </div>
                 </div>
             </div>
-        </div> -->
-    <!-- </div> -->
-        <Footer></Footer>
     </div>
+    </div>
+    <Footer></Footer>
 </template>
 
 <script>
@@ -79,6 +76,7 @@ import LoginService from "../store/loginStore";
 import Cookies from "js-cookie";
 import NavigationBar from "../components/navigationBar.vue";
 import Footer from "../components/footer.vue";
+import NavigationBar1 from "../components/navigationBar.vue";
 export default {
     name: "Dashboard",
     data() {
@@ -99,6 +97,20 @@ export default {
             date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
             this.user.createdAt = date;
             this.user.email = user.data.email;
+
+            let admin = false;
+            if(this.user.role !== undefined) {
+                admin = true;
+            }
+            if (!Cookies.get("admin")) {
+            Cookies.set("admin", admin, {
+                expires: 1,
+                secure: false,
+                domain: "localhost",
+                path: "/",
+                sameSite: "strict",
+            });
+            }
         }
         catch (err) {
             //   if (err.response.status == 401) {
@@ -109,20 +121,6 @@ export default {
         }
     },
     methods: {
-        async deleteUser() {
-            try {
-                const token = Cookies.get("token");
-                const email = await this.$route.query.email;
-                if (confirm("Do you really want to delete your account?")) {
-                    await LogicService.deleteUser(email, token);
-                    Cookies.remove("token");
-                    await this.$router.push(`/login`);
-                }
-            }
-            catch (err) {
-                return err;
-            }
-        },
     },
     components: { NavigationBar, Footer }
 };

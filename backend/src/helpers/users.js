@@ -12,6 +12,7 @@ async function insertUser(user) {
         const to_insert = {
             user_id,
             ...user,
+            created: Date.now(),
         };
         await env.mongo.collection("users").insertOne(to_insert);
     } catch (error) {

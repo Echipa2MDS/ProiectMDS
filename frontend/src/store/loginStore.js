@@ -25,7 +25,6 @@ class LoginService {
     }
     static async emailCheck(email) {
         const status = await axios.post(`${url}checkUserEmail`, { email });
-        console.log(status)
         return status;
     }
     static async passwordCheck(password, email) {
@@ -34,7 +33,6 @@ class LoginService {
     }
 
     static async logoutUser(email, token) {
-        console.log(token)
         const user = await axios.delete(`${url}logout/${email}`, {
             headers: {
                 Authorization: `Bearer ${token}`
