@@ -8,7 +8,7 @@
             {{ error }}
         </p>
         <div v-if="!error" class="d-flex justify-content-between mb-2 mt-3">            
-            <input :v-if="admin" type="submit" class="btn btn-success" value="Create" @click="createUser()">
+            <input v-if="admin === 'true' || admin === true" type="submit" class="btn btn-success" value="Create" @click="createUser()">
         </div>
         <div class="row justify-content-center overflow-auto">
             <div>
@@ -78,9 +78,9 @@ export default {
         }
     },
     async created() {
+        this.admin = await Cookies.get("admin");
         this.list_users();
-
-        this.admin = Cookies.get("admin");
+        console.log(typeof this.admin)
     },
     methods: {
         async list_users(){

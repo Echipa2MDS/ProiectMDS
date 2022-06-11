@@ -53,6 +53,7 @@
 
 <script>
 import LoginService from "../store/loginStore";
+import Cookies from 'js-cookie'
 const emailRegex = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
 export default {
   name: "LoginEmail",
@@ -78,7 +79,8 @@ export default {
       try {
         const email = this.user.email;
         const res = await LoginService.emailCheck(email);
-        console.log(res.status)
+
+        Cookies.set("user_id", res.data.user.user_id);
         if (res.status === 200) {
           await this.$router.push(`/password?email=${email}`);
         }

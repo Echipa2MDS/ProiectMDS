@@ -7,8 +7,9 @@ const {
 function checkUserEmailHandler() {
     return async(req, res) => {
         try {
-            const status = await checkUserEmailDb(req.body.email);
-            return status;
+            const user = await checkUserEmailDb(req.body.email);
+            console.log(user)
+            return {user};
         } catch (err) {
             throw err;
         }
@@ -20,6 +21,7 @@ function checkUserPasswordHandler(fastify) {
         try {
             const email = req.query.email,
                 password = req.body.password;
+            console.log(password)
             const token = await checkUserPasswordDb(fastify, email, password);
             return token;
         } catch (err) {

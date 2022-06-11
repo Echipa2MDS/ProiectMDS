@@ -72,7 +72,7 @@ async function readUsers(query, page, limit = 20) {
 
 async function readUser(user_id) {
     let user = null;
-    const query = { user_id },
+    const query = {user_id},
         projection = { _id: 0 };
 
     try {
@@ -106,7 +106,7 @@ async function checkUserEmailDb(email) {
     const query = {email},
         user = await env.mongo.collection("users").findOne(query);
     if (user) {
-        return { status: "OK" };
+        return user;
     } else {
         throw new Error("The email is not associated to an account");
     }
@@ -114,7 +114,9 @@ async function checkUserEmailDb(email) {
 
 async function checkUserPasswordDb(fastify, email, password) {
     const query = {email},
-        user = await env.mongo.collection("users").findOne(query),
+        user = await env.mongo.collection("users").findOne(query);
+        console.log(user)
+        const 
         match = await bcrypt.compare(password, user.password);
     if (match) {
         const token = await generateToken(fastify, user);

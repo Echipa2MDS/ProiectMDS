@@ -97,20 +97,6 @@ export default {
             date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
             this.user.createdAt = date;
             this.user.email = user.data.email;
-
-            let admin = false;
-            if(this.user.role !== undefined) {
-                admin = true;
-            }
-            if (!Cookies.get("admin")) {
-            Cookies.set("admin", admin, {
-                expires: 1,
-                secure: false,
-                domain: "localhost",
-                path: "/",
-                sameSite: "strict",
-            });
-            }
         }
         catch (err) {
             //   if (err.response.status == 401) {

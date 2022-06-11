@@ -20,5 +20,14 @@ class UserService {
         })
         return users;
     }
+
+    static async getUser(query, token) {
+        const users = await axios.get(`${url}users/${query}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return users;
+    }
 }
 export default UserService;

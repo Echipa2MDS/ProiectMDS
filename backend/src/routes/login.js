@@ -8,9 +8,9 @@ async function usersRoutes(fastify, options) {
         } = require("../controllers/login/login");
 
     fastify
-        .post('/registerUser',  { schema: schema.registerUserOpts }, registerUser(fastify))
-        .post('/checkUserEmail',  { schema: schema.registerUserOpts }, checkUserEmailHandler())
-        .post('/checkUserPassword',  { schema: schema.registerUserOpts }, checkUserPasswordHandler(fastify));
+        .post('/registerUser', registerUser(fastify))
+        .post('/checkUserEmail', checkUserEmailHandler())
+        .post('/checkUserPassword', checkUserPasswordHandler(fastify));
 }
 
 module.exports = usersRoutes;

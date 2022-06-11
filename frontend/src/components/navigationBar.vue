@@ -58,9 +58,11 @@ export default {
          async logout() {
             try {
                 const token = await Cookies.get("token");
-                const email = await this.$route.query.email;
+                const email = await Cookies.get("email");
                 await LoginService.logoutUser(email, token);
                 Cookies.remove("token");
+                Cookies.remove("email");
+                Cookies.remove("admin");
                 await this.$router.push("/login");
             }
             catch (err) {

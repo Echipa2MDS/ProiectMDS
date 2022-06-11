@@ -27,9 +27,9 @@ router.beforeEach((to, from, next) => {
   const protectedRoutes = ['/password', '/password/'];
   if (from.path !== '/login' && protectedRoutes.includes(to.path)) {
       return next('/login');
-  } else {
+  }else {
       return next();
   }
-})
+});
 
 export default router;

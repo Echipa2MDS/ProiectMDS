@@ -38,7 +38,7 @@
             ></span>
             <input
               type="text"
-              v-model="user.fistName"
+              v-model="user.firstName"
               id="firstName"
               placeholder="Fist Name"
             />
