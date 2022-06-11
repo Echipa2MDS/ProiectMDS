@@ -10,7 +10,7 @@ function startServer() {
     try {
         const {routes} = require('../routes/index');
         fastify.register(routes);
-        fastify.register(require("../middleware/auth"))
+        // fastify.register(require("../middleware/auth"))
         fastify.register(require('@fastify/jwt'), {
             secret: env.auth
         });
@@ -42,6 +42,7 @@ async function run() {
         env.auth = process.env.JWT_SECRET;
         startServer();
         env.mongo = await startDatabase();
+        env.salt = process.env.SALT;
     } catch (error) {
         console.log(error);
     }

@@ -1,6 +1,6 @@
 'use strict'
-const fastifyPlugin = require('fastify-plugin'),
-    {readUser} = require("../helpers/users");
+// const fastifyPlugin = require('fastify-plugin'),
+const {readUser} = require("../helpers/users");
 
 function JwtAuthHandler(fastify) {
     return async(req, res) => {
@@ -21,6 +21,8 @@ function JwtAuthHandler(fastify) {
     }
 }
 
-module.exports = fastifyPlugin(async(fastify) => {
-    fastify.decorate('jwtauth', JwtAuthHandler(fastify))
-})
+module.exports = {JwtAuthHandler};
+
+// module.exports = fastifyPlugin(async(fastify) => {
+//     fastify.decorate('jwtauth', JwtAuthHandler(fastify))
+// })

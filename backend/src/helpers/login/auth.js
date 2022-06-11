@@ -2,7 +2,7 @@
 const env = require("../../resources/env/index");
 
 async function generateToken(fastify, user) {
-    const uId = user._id,
+    const uId = user.user_id,
         eml = user.email,
         iat = new Date().getTime();
 

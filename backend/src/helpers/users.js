@@ -5,13 +5,15 @@ const env = require("../resources/env/index"),
     {generateToken} = require("./login/auth");
 
 async function insertUser(user) {
-    const user_id = uuid.v4(),
+    const user_id = uuid.v4();
+
+    try {
+        user.password = await bcrypt.hash(user.password, parseInt(env.salt));
+
         to_insert = {
             user_id,
             ...user,
         };
-
-    try {
         await env.mongo.collection("users").insertOne(to_insert);
     } catch (error) {
         if (error.name === "MongoServerError" && error.code === 11000) {
@@ -59,9 +61,6 @@ async function readUsers(query, page, limit = 20) {
         cursor.project(project);
 
         const users = await cursor.toArray();
-
-        console.log(count,
-            users)
         return {
             count,
             users
@@ -81,8 +80,7 @@ async function readUser(user_id) {
     } catch (error) {
         throw new Error(error);
     }
-    console.log(user)
-    console.log(query)
+
     if (!user) {
         throw new Error("User not found");
     }
