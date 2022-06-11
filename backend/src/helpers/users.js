@@ -9,8 +9,7 @@ async function insertUser(user) {
 
     try {
         user.password = await bcrypt.hash(user.password, parseInt(env.salt));
-
-        to_insert = {
+        const to_insert = {
             user_id,
             ...user,
         };
@@ -80,7 +79,6 @@ async function readUser(user_id) {
     } catch (error) {
         throw new Error(error);
     }
-
     if (!user) {
         throw new Error("User not found");
     }
@@ -107,7 +105,7 @@ async function checkUserEmailDb(email) {
     const query = {email},
         user = await env.mongo.collection("users").findOne(query);
     if (user) {
-        return { status: 0 }
+        return { status: "OK" };
     } else {
         throw new Error("The email is not associated to an account");
     }

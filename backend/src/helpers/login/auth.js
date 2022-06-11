@@ -12,7 +12,7 @@ async function generateToken(fastify, user) {
 }
 
 async function deleteToken(email) {
-    const token = await env.mongo.tokens.deleteOne({ userEmail: email })
+    const token = await env.mongo.collection("tokens").deleteOne({ userEmail: email })
     if (token.deletedCount == 1) {
         return token;
     } else {

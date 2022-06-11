@@ -8,7 +8,7 @@ function checkUserEmailHandler() {
     return async(req, res) => {
         try {
             const status = await checkUserEmailDb(req.body.email);
-            return status
+            return status;
         } catch (err) {
             throw err;
         }

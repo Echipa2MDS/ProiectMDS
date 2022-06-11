@@ -1,4 +1,4 @@
-const schema = require("../validation/user")
+const schema = require("../validation/user");
 
 async function usersRoutes(fastify, options) {
     const registerUser = require("../controllers/login/register"),

@@ -1,4 +1,4 @@
-const {JwtAuthHandler} = require("../middleware/auth")
+const {JwtAuthHandler} = require("../middleware/auth");
 
 async function usersRoutes(fastify, options) {
     const createCustomer = require("../controllers/customers/create_customer"),

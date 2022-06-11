@@ -8,6 +8,9 @@ const client = new MongoClient(process.env.MONGO_URI);
 
 function startServer() {
     try {
+        fastify.register(require('@fastify/cors'), {
+            origin: "*"
+        });
         const {routes} = require('../routes/index');
         fastify.register(routes);
         // fastify.register(require("../middleware/auth"))
@@ -17,6 +20,8 @@ function startServer() {
         fastify.register(require('@fastify/cookie'), {
             secret: env.auth
         });
+
+        
 
         fastify.listen(3000, function (error, address) {
             if (error) {

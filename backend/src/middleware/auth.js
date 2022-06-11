@@ -1,5 +1,5 @@
 'use strict'
-// const fastifyPlugin = require('fastify-plugin'),
+// const fastifyPlugin = require('fastify-plugin');
 const {readUser} = require("../helpers/users");
 
 function JwtAuthHandler(fastify) {

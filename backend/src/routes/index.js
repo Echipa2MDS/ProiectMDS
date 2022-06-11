@@ -3,6 +3,7 @@ async function routes(fastify, options) {
         .register(require('./users'), {prefix: '/users'})
         .register(require('./login'))
         .register(require("./appoints"), {prefix: '/appoints'})
+        .register(require("./logout"))
         .register(require("./customers"), {prefix: '/customers'});
 }
 
