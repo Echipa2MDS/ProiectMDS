@@ -10,8 +10,8 @@ async function usersRoutes(fastify, options) {
         .addHook("onRequest", JwtAuthHandler(fastify))
         .post('/', {}, createCustomer)
         .get('/', {}, listCustomers)
-        .get('/:user_id', {}, readCustomer)
-        .put('/:user_id', {}, updateCustomer);
+        .get('/:customer_id', {}, readCustomer)
+        .patch('/:customer_id', {}, updateCustomer);
 }
 
 module.exports = usersRoutes;

@@ -115,7 +115,6 @@ async function checkUserEmailDb(email) {
 async function checkUserPasswordDb(fastify, email, password) {
     const query = {email},
         user = await env.mongo.collection("users").findOne(query);
-        console.log(user)
         const 
         match = await bcrypt.compare(password, user.password);
     if (match) {

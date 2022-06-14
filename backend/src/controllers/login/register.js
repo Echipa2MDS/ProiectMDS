@@ -9,7 +9,6 @@ const env = require("../../resources/env/index"),
 function registerUserHandler(fastify) {
     return async(req, reply) => {
         try {
-            console.log(req.body)
             const {user} = req.body,
                 user_id = await insertUser(user),
                 newUser = await readUser(user_id),

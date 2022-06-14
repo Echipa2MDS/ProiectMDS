@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "mocha --recursive --exit --reporter nyan test"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +22,11 @@
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
-    "eslint": "^8.16.0"
+    "assert": "^2.0.0",
+    "chai": "^4.3.6",
+    "eslint": "^8.16.0",
+    "mocha": "^10.0.0",
+    "rewire": "^6.0.0",
+    "sinon": "^14.0.0"
   }
 }

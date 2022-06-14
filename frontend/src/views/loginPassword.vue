@@ -74,7 +74,6 @@ export default {
 		async loginPassword() {
 			try {
 				const email = await this.$route.query.email;
-				console.log(this.user.password)
 				const res = await LoginService.passwordCheck(
 					this.user.password,
 					email

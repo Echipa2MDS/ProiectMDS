@@ -18,7 +18,7 @@
                             <p class="card-text">
                                 The customers registered in the database
                             </p>
-                            <a href="/organizations" class="btn btn-secondary">See Organizations</a>
+                            <a href="/customers" class="btn btn-secondary">See Customers</a>
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                             <p class="card-text">
                                 The appointments that been booked in past or future
                             </p>
-                            <a href="/plans" class="btn btn-secondary">See Plans</a>
+                            <a href="/plans" class="btn btn-secondary">See Appointments</a>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                             <p class="card-text">
                                 The users that have access to the paltform
                             </p>
-                            <a href="/translations" class="btn btn-secondary">See Translations</a>
+                            <a href="/users" class="btn btn-secondary">See Users</a>
                         </div>
                     </div>
                 </div>

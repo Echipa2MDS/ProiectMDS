@@ -26,8 +26,9 @@ async function insertCustomer(customer) {
 
 async function updateCustomer(customer_id, data) {
     let op_result = null;
+    delete data.customer._id;
     const filter = { customer_id },
-        update = { $set: data };
+        update = { $set: data.customer };
 
     if (lodash.isEmpty(update.$set)) {
         return;
@@ -47,20 +48,16 @@ async function updateCustomer(customer_id, data) {
     }
 }
 
-async function readCustomers(query, page, limit = 20) {
+async function readCustomers(query) {
     try {
-        const skip = page * limit,
-            project = { _id: 0 },
+        const project = { _id: 0 },
             filter = {};
 
         const cursor = env.mongo.collection("customers").find(filter),
             count = await cursor.count();
-
-        cursor.skip(skip);
-        cursor.limit(limit);
         cursor.project(project);
 
-        const customers = cursor.toArray();
+        const customers = await cursor.toArray();
 
         return {
             count,
@@ -130,6 +127,7 @@ async function deleteCustomerAppoint(customer_id, appoint_id) {
     const query = {customer_id},
         update = {$pull: {appoints: appoint_id}}
 
+    console.log(query, update)
     try {
         op_result = await env.mongo.collection("customers").updateOne(query, update);
     } catch(error) {

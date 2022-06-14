@@ -80,7 +80,6 @@ export default {
     async created() {
         this.admin = await Cookies.get("admin");
         this.list_users();
-        console.log(typeof this.admin)
     },
     methods: {
         async list_users(){

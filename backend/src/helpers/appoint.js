@@ -9,7 +9,7 @@ const env = require("../resources/env/index"),
 
 async function createAppoint(appoint) {
     const appoint_id = uuid.v4(),
-        {customer_id} = appoint,
+        {customer_id} = appoint.customer,
         to_insert = {
             appoint_id,
             ...appoint,
@@ -44,17 +44,24 @@ async function createAppoint(appoint) {
 async function updateAppoint(appoint_id, data) {
     let op_result = null;
     const filter = { appoint_id },
-        update = { $set: data };
+        update = { $set: data.appoints };
+    delete data.appoints._id;
 
     if (lodash.isEmpty(update.$set)) {
         return;
     }
 
-    if(appoint.date < Date.now()) {
+    if(data.date < Date.now()) {
         throw new Error("An appointment cannot be in a past date");
     }
 
     try {
+        const old_app = await readAppoint(appoint_id);
+        if (!lodash.isEqual(data.appoints.customer, old_app.customer)) {
+            await deleteCustomerAppoint(old_app.customer.customer_id, appoint_id);
+            await insertAppointToCustomer(data.appoints.customer.customer_id, appoint_id);
+        }
+
         op_result = await env.mongo.collection("appoints").updateOne(filter, update);
     } catch (error) {
         if (error.name === "MongoServerError" && error.code === 11000) {
@@ -68,23 +75,11 @@ async function updateAppoint(appoint_id, data) {
     }
 }
 
-async function readAppoints(query, page, limit = 20) {
+async function readAppoints(query) {
     try {
-        const skip = page * limit,
-            project = { _id: 0 },
-            filter = {};
-
-        if(lodash.isEmpty(query)) {
-            filter = {...query}
-        }
-        const cursor = env.mongo.collection("appoints").find(filter),
-            count = await cursor.count();
-
-        cursor.skip(skip);
-        cursor.limit(limit);
-        cursor.project(project);
-
-        const appoints = cursor.toArray();
+        const cursor = env.mongo.collection("appoints").find(),
+            count = await cursor.count(),
+            appoints = await cursor.toArray();
 
         return {
             count,
@@ -126,11 +121,13 @@ async function deleteAppointsOfCustomer(customer_id) {
 
 async function deleteAppoint(appoint_id) {
     let op_result = null;
-    const query = (appoint_id);
+    const query = {appoint_id};
+
+    console.log(appoint_id)
 
     try {
         const appoint = await readAppoint(appoint_id),
-            {customer_id} = appoint;
+            {customer_id} = appoint.customer;
         
         op_result = await env.mongo.collection("appoints").deleteOne(query);
 

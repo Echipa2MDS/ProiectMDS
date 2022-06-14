@@ -8,7 +8,6 @@ function checkUserEmailHandler() {
     return async(req, res) => {
         try {
             const user = await checkUserEmailDb(req.body.email);
-            console.log(user)
             return {user};
         } catch (err) {
             throw err;
@@ -21,7 +20,6 @@ function checkUserPasswordHandler(fastify) {
         try {
             const email = req.query.email,
                 password = req.body.password;
-            console.log(password)
             const token = await checkUserPasswordDb(fastify, email, password);
             return token;
         } catch (err) {
